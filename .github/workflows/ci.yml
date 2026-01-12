@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v12
+        with:
+          extra-conf: |
+            accept-flake-config = true
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+        with:
+          use-flakehub: false
+          use-gha-cache: true
+
+      - name: Check flake
+        run: nix flake check
+
+      - name: Build
+        run: nix build
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v12
+        with:
+          extra-conf: |
+            accept-flake-config = true
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+        with:
+          use-flakehub: false
+          use-gha-cache: true
+
+      - name: Build
+        run: nix build
+
+      - name: Pack
+        run: tar -czf zlog-lean.tar.gz -C result .
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: zlog-lean.tar.gz
+          generate_release_notes: true
