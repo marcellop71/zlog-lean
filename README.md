@@ -89,7 +89,7 @@ Add to your `flake.nix`:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    zlog-lean.url = "github:marcellop71/zlog-lean";
+    zlog-lean.url = "github:proofinity-it/zlog-lean";
   };
 
   outputs = { self, nixpkgs, zlog-lean }:
@@ -129,7 +129,7 @@ Add to your `lakefile.lean`:
 
 ```lean
 require zlogLean from git
-  "git@github.com:marcellop71/zlog-lean.git" @ "main"
+  "https://github.com/proofinity-it/zlog-lean" @ "main"
 ```
 
 ## Quick Start
@@ -310,7 +310,8 @@ sudo apt-get install libzlog-dev
 
 ## License
 
-[Your License Here]
+Copyright © 2026 Proofinity s.r.l. Licensed under the Apache License,
+Version 2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 ## Contributing
 
